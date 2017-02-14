@@ -6,17 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication.Controllers
 {
-    public class HomeController : Controller
+    public class RecipesController : Controller
     {
-        [HttpGet("")]
+        [HttpGet("recipes")]
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "Recipes");
+            return View();
         }
 
-        public IActionResult Error()
+        [HttpGet("recipes/{id}")]
+        public IActionResult Recipe(Guid id)
         {
-            return View();
+            return View(id);
         }
     }
 }
