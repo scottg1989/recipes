@@ -5,7 +5,8 @@ var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify");
+    uglify = require("gulp-uglify"),
+    runSequence = require("run-sequence");
 
 var webroot = "./wwwroot/";
 
@@ -42,4 +43,19 @@ gulp.task("min:css", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min", ["min:js", "min:css"]);
+gulp.task('watch:js', function () {
+    gulp.watch([paths.js, "!" + paths.minJs], ['min:js']);
+});
+
+gulp.task('watch:css', function () {
+    gulp.watch([paths.css, "!" + paths.minCss], ['min:css']);
+});
+
+gulp.task("default", function(callback) {
+    runSequence('clean',
+                'min:css',
+                'min:js',
+                'watch:css',
+                'watch:js',
+                callback);
+});
